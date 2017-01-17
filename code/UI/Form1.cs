@@ -24,6 +24,17 @@ namespace GooglePlayScraper
         private void StartProcessing()
         {
             Data db = new Data(dbPath);
+
+            UpdateStatus(string.Format("Creating Table"));
+            try
+            {
+                    db.CreateTable();
+            }
+            catch (Exception error)
+            {
+                UpdateStatus(string.Format("{0}; {1}", error.Message, error.StackTrace));
+            }
+
             Dictionary<string, string> dict = db.GetApps();
             dict.Count();
             
@@ -39,25 +50,28 @@ namespace GooglePlayScraper
             App app;
 
             Parallel.For(0, threadCount, i =>
-            {
-                var dataSet = result.ElementAt(i);
-                Console.WriteLine("Processing dataset: "+i +"; Count: "+dataSet.Count());
-                foreach (var item in dataSet)
+            {                
+                var dataSet = result.ElementAtOrDefault(i);
+                if (dataSet != null)
                 {
-                    UpdateStatus("Processing: " + item.Value);
-                    app = App.GetAppByID(item.Value);
-                    if (app != null)
-                        lock (appList)
-                        {
-                            db.InsertApp(app, item.Key);
-                            appList.Add(app);
-                            UpdateStatus(string.Format("{0} is available on Google Play", item.Value));
-                        }
-                    else
+                    Console.WriteLine("Processing dataset: " + i + "; Count: " + dataSet.Count());
+                    foreach (var item in dataSet)
                     {
-                        UpdateStatus(string.Format("{0} is not listed on Google Play", item.Value));
+                        UpdateStatus("Processing: " + item.Value);
+                        app = App.GetAppByID(item.Value);
+                        if (app != null)
+                            lock (appList)
+                            {
+                                db.InsertApp(app, item.Key);
+                                appList.Add(app);
+                                UpdateStatus(string.Format("{0} is available on Google Play", item.Value));
+                            }
+                        else
+                        {
+                            UpdateStatus(string.Format("{0} is not listed on Google Play", item.Value));
+                        }
+                        Thread.Sleep(1500);
                     }
-                    Thread.Sleep(1500);
                 }
                 UpdateStatus(string.Format("Thread {0} is done", i));
             });

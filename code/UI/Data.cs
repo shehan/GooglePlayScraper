@@ -20,29 +20,28 @@ namespace GooglePlayScraper
             "APPID, NAME, TITLE, DESCRIPTION, GENRE, DEVELOPER, RATING, MIN_VERSION, INSTALLS, CURRENT_VERSION, URL, TOTAL_REVIEWS, SCORE, UPDATED_TEXT, UPDATED_TICKS, IS_TOP_DEVELOPER, IS_EDITOR_PICK " +
             ") VALUES ({0}, '{1}', '{2}', '{3}', '{4}', '{5}', '{6}', '{7}', '{8}', '{9}', '{10}', {11}, {12}, '{13}', {14}, {15}, {16});";
 
-        /*         
-         CREATE TABLE GOOGLE_PLAY_APP
-(
-    ID INTEGER NOT NULL,
-    APPID INTEGER,
-    NAME TEXT,
-    TITLE TEXT,
-    DESCRIPTION TEXT,
-    GENRE TEXT,
-    DEVELOPER TEXT,
-    RATING TEXT,
-    MIN_VERSION TEXT,
-    INSTALLS TEXT,
-    CURRENT_VERSION TEXT,
-    URL TEXT,
-    TOTAL_REVIEWS REAL,
-    SCORE REAL,
-    UPDATED_TEXT TEXT,
-    UPDATED_TICKS REAL,
-    IS_TOP_DEVELOPER INTEGER DEFAULT 0,
-    IS_EDITOR_PICK INTEGER DEFAULT 0
-);                  
-         */
+        public static string CREATE_TABLE = "CREATE TABLE GOOGLE_PLAY_APP (" +
+    "ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+    "APPID INTEGER, " +
+    "NAME TEXT, " +
+    "TITLE TEXT, " +
+    "DESCRIPTION TEXT, " +
+    "GENRE TEXT, " +
+    "DEVELOPER TEXT, " +
+    "RATING TEXT, " +
+    "MIN_VERSION TEXT, " +
+    "INSTALLS TEXT, " +
+    "CURRENT_VERSION TEXT, " +
+    "URL TEXT, " +
+    "TOTAL_REVIEWS REAL, " +
+    "SCORE REAL, " +
+    "UPDATED_TEXT TEXT, " +
+    "UPDATED_TICKS REAL, " +
+    "IS_TOP_DEVELOPER INTEGER DEFAULT 0, " +
+    "IS_EDITOR_PICK INTEGER DEFAULT 0 " +
+");";                  
+
+
 
 
         private string sourceFilePath;
@@ -50,6 +49,27 @@ namespace GooglePlayScraper
         {
             this.sourceFilePath = sourceFilePath;
         }
+
+        public void CreateTable()
+        {
+            using (SQLiteConnection dbConnection = new SQLiteConnection(string.Format(CONNECTION_STRING, sourceFilePath)))
+            {
+                using (SQLiteCommand command = new SQLiteCommand(dbConnection))
+                {
+                    dbConnection.Open();
+                    using (var transaction = dbConnection.BeginTransaction())
+                    {
+
+                        command.CommandText = CREATE_TABLE;
+                        command.ExecuteNonQuery();
+                        transaction.Commit();
+                    }
+
+                    dbConnection.Close();
+                }
+            }
+        }
+
         public Dictionary<string, string> GetApps()
         {
             Dictionary<string, string> apps = new Dictionary<string, string>();

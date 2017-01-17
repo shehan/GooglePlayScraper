@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26014.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Desktop", "code\Desktop.csproj", "{57B332ED-068E-4CA4-8BFF-FA5042139A5C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scraper", "code\Scraper\Scraper.csproj", "{DDDCEEB7-DAFB-4622-B581-96F44F2BD996}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scraper", "Scraper\Scraper.csproj", "{DDDCEEB7-DAFB-4622-B581-96F44F2BD996}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "code\UI\UI.csproj", "{DB63A6C5-BE6F-4BD0-A165-3A4DBAE7E39E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{57B332ED-068E-4CA4-8BFF-FA5042139A5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{57B332ED-068E-4CA4-8BFF-FA5042139A5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{57B332ED-068E-4CA4-8BFF-FA5042139A5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{57B332ED-068E-4CA4-8BFF-FA5042139A5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DDDCEEB7-DAFB-4622-B581-96F44F2BD996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DDDCEEB7-DAFB-4622-B581-96F44F2BD996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDDCEEB7-DAFB-4622-B581-96F44F2BD996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDDCEEB7-DAFB-4622-B581-96F44F2BD996}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB63A6C5-BE6F-4BD0-A165-3A4DBAE7E39E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB63A6C5-BE6F-4BD0-A165-3A4DBAE7E39E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB63A6C5-BE6F-4BD0-A165-3A4DBAE7E39E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB63A6C5-BE6F-4BD0-A165-3A4DBAE7E39E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

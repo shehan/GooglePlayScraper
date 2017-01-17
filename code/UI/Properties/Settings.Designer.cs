@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GooglePlayScraper.Properties
+namespace UI.Properties
 {
 
 
