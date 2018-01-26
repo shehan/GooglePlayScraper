@@ -8,7 +8,7 @@ namespace Scraper
 {
     public class App
     {
-        string appId, title, description, genre, developer, rating, minVersion, installs;
+        string name, title, description, genre, developer, rating, minVersion, installs;
         string currentVersion;
         Uri url;
         double totalReviews, score;
@@ -17,7 +17,7 @@ namespace Scraper
 
         public App()
         {
-            this.appId = string.Empty;
+            this.name = string.Empty;
             this.title = string.Empty;
             this.description = string.Empty;
             this.genre = string.Empty;
@@ -34,7 +34,7 @@ namespace Scraper
             this.isEditorPick = false;
         }
 
-        public string AppId { get => appId; set => appId = value; }
+        public string Name { get => name; set => name = value; }
         public string Title { get => title; set => title = value; }
         public string Description { get => description; set => description = value; }
         public string Genre { get => genre; set => genre = value; }
@@ -50,12 +50,12 @@ namespace Scraper
         public string MinVersion { get => minVersion; set => minVersion = value; }
         public string Installs { get => installs; set => installs = value; }
 
-        public static App GetAppByID(string ID)
+        public static App GetAppByID(string appName)
         {
             App app = null;// new App();
 
 
-            app = Scraper.ScrapeSite(ID);
+            app = Scraper.ScrapeSite(appName);
 
             return app;
         }

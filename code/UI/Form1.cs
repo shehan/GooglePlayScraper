@@ -23,26 +23,18 @@ namespace GooglePlayScraper
 
         private void StartProcessing()
         {
+
+            UpdateStatus(string.Format("Creating Google Play Database"));
             Data db = new Data(dbPath);
 
-            UpdateStatus(string.Format("Creating Table"));
-            try
-            {
-                    db.CreateTable();
-            }
-            catch (Exception error)
-            {
-                UpdateStatus(string.Format("{0}; {1}", error.Message, error.StackTrace));
-            }
+            List<string> apps = db.GetApps();
+            apps.Count();
 
-            Dictionary<string, string> dict = db.GetApps();
-            dict.Count();
-            
             decimal numberOfGroups = 3;
-            int counter = 0;
-            int groupSize = Convert.ToInt32(Math.Ceiling(dict.Count / numberOfGroups));
+            //int counter = 0;
+            int groupSize = Convert.ToInt32(Math.Ceiling(apps.Count / numberOfGroups));
 
-            var result = dict.GroupBy(x => counter++ / groupSize);
+            var result = apps.ChunkBy(groupSize); //apps.GroupBy(x => counter++ / groupSize);
 
             int threadCount = result.Count() + 1;
 
@@ -50,25 +42,25 @@ namespace GooglePlayScraper
             App app;
 
             Parallel.For(0, threadCount, i =>
-            {                
-                var dataSet = result.ElementAtOrDefault(i);
+            {
+                var dataSet = result.ElementAtOrDefault((int)i);
                 if (dataSet != null)
                 {
                     Console.WriteLine("Processing dataset: " + i + "; Count: " + dataSet.Count());
                     foreach (var item in dataSet)
                     {
-                        UpdateStatus("Processing: " + item.Value);
-                        app = App.GetAppByID(item.Value);
+                        UpdateStatus("Processing: " + item);
+                        app = App.GetAppByID(item);
                         if (app != null)
                             lock (appList)
                             {
-                                db.InsertApp(app, item.Key);
+                                db.InsertApp(app);
                                 appList.Add(app);
-                                UpdateStatus(string.Format("{0} is available on Google Play", item.Value));
+                                UpdateStatus(string.Format("{0} is available on Google Play", item));
                             }
                         else
                         {
-                            UpdateStatus(string.Format("{0} is not listed on Google Play", item.Value));
+                            UpdateStatus(string.Format("{0} is not listed on Google Play", item));
                         }
                         Thread.Sleep(1500);
                     }
@@ -82,7 +74,7 @@ namespace GooglePlayScraper
             dbPath = textBoxDB.Text;
             if (!File.Exists(dbPath))
             {
-                MessageBox.Show("The path for the database file is not valid."+Environment.NewLine+"Please enter a valid file path.");
+                MessageBox.Show("The path for the database file is not valid." + Environment.NewLine + "Please enter a valid file path.");
                 return;
             }
 
@@ -107,5 +99,17 @@ namespace GooglePlayScraper
         }
 
         delegate void UpdateStatusCallback(string text);
+    }
+
+    public static class ListExtensions
+    {
+        public static List<List<T>> ChunkBy<T>(this List<T> source, int chunkSize)
+        {
+            return source
+                .Select((x, i) => new { Index = i, Value = x })
+                .GroupBy(x => x.Index / chunkSize)
+                .Select(x => x.Select(v => v.Value).ToList())
+                .ToList();
+        }
     }
 }

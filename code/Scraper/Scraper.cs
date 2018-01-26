@@ -9,17 +9,17 @@ namespace Scraper
     {
         private static object locker = new object();
 
-        public static App ScrapeSite(string appID)
+        public static App ScrapeSite(string appName)
         {
             try
             {
                 App scrapedApp = new App();
                 var html = new HtmlDocument();
 
-                html.LoadHtml(new System.Net.WebClient().DownloadString(BuildURL(appID)));
+                html.LoadHtml(new System.Net.WebClient().DownloadString(BuildURL(appName)));
 
-                scrapedApp.AppId = appID;            
-                scrapedApp.Url = new Uri(BuildURL(appID));
+                scrapedApp.Name = appName;            
+                scrapedApp.Url = new Uri(BuildURL(appName));
 
                 var appScore = html.DocumentNode.SelectNodes("//div[@class='score']");
                 if (appScore != null)
@@ -86,7 +86,7 @@ namespace Scraper
                     {
                         using (StreamWriter w = File.AppendText("error.txt"))
                         {
-                            w.WriteLine(string.Format("{0};{1}", appID, error.Message));
+                            w.WriteLine(string.Format("{0};{1}", appName, error.Message));
                         }
                         return null;
                     }
@@ -94,7 +94,7 @@ namespace Scraper
                     {
                         using (StreamWriter w = File.AppendText("error.txt"))
                         {
-                            w.WriteLine(string.Format("UNKNOWN FAULT! - {0};{1}", appID, error.Message));
+                            w.WriteLine(string.Format("UNKNOWN FAULT! - {0};{1}", appName, error.Message));
                         }
                         return null;
                     }

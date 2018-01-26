@@ -51,7 +51,7 @@
             this.textBoxDB.Name = "textBoxDB";
             this.textBoxDB.Size = new System.Drawing.Size(389, 20);
             this.textBoxDB.TabIndex = 1;
-            this.textBoxDB.Text = "database.sqlite";
+            this.textBoxDB.Text = "Apps.txt";
             // 
             // textBoxLog
             // 
